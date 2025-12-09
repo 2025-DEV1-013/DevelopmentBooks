@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -17,6 +18,14 @@ import java.util.List;
 public class BookService {
 
     private static final double BOOK_PRICE = 50.0;
+
+    private static final Map<Integer, Double> DISCOUNTS = Map.of(
+            1, 0.00,
+            2, 0.05,
+            3, 0.10,
+            4, 0.20,
+            5, 0.25
+    );
 
     private final BookMapper mapper;
 
@@ -28,19 +37,8 @@ public class BookService {
     }
 
     public double calculateBookPrice(List<Book> bookList) {
-        int reqBookCount = bookList.size();
-        double totalPrice = 0.0;
-        if(reqBookCount == 1)
-            totalPrice = BOOK_PRICE * reqBookCount;
-        else if(reqBookCount == 2){
-            totalPrice = (BOOK_PRICE * reqBookCount) * (1 - 0.05);
-        }else if(reqBookCount == 3){
-            totalPrice = (BOOK_PRICE * reqBookCount) * (1 - 0.10);
-        }else if(reqBookCount == 4){
-            totalPrice = (BOOK_PRICE * reqBookCount) * (1 - 0.20);
-        }else if(reqBookCount == 5){
-            totalPrice = (BOOK_PRICE * reqBookCount) * (1 - 0.25);
-        }
-        return totalPrice;
+        int bookCount = bookList.size();
+        double discount = DISCOUNTS.getOrDefault(bookCount, 0.0);
+        return (BOOK_PRICE * bookCount) * (1 - discount);
     }
 }
