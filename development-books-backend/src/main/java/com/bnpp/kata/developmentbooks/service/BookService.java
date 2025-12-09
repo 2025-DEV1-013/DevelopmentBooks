@@ -36,6 +36,8 @@ public class BookService {
             totalPrice = (BOOK_PRICE * reqBookCount) * (1 - 0.05);
         } else if(reqBookCount == 3){
             totalPrice = (BOOK_PRICE * reqBookCount) * (1 - 0.10);
+        } else if(reqBookCount == 4){
+            totalPrice = (BOOK_PRICE * reqBookCount) * (1 - 0.20);
         }
         return totalPrice;
     }
