@@ -114,13 +114,26 @@ class BookServiceTest {
 
     @Test
     @DisplayName("Choose multiple grouping when some titles have multiple copies")
-    void testThreeTitles_multipleCopies_mixedOptimal() {
+    void testThreeTitlesMultipleCopiesWithMixedOptimal() {
         List<Book> items = List.of(
                 new Book("Clean Code", 2),
                 new Book("Clean Architecture", 1),
                 new Book("The Clean Coder", 2)
         );
         assertEquals(230.0, bookService.calculateBookPrice(items), 0.01);
+    }
+
+    @Test
+    @DisplayName("Calculate optimal pricing for multi-set scenario resulting in 320 EUR")
+    void testKataExampleMultipleSetsWithOptimal320() {
+        List<Book> items = List.of(
+                new Book("Clean Code", 2),
+                new Book("The Clean Coder", 2),
+                new Book("Clean Architecture", 2),
+                new Book("TDD", 1),
+                new Book("Legacy Code", 1)
+        );
+        assertEquals(320.0, bookService.calculateBookPrice(items), 0.01);
     }
 
 }
