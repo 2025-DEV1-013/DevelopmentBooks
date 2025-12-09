@@ -78,5 +78,24 @@ class BookControllerTest {
                 .andExpect(jsonPath("$.discountPrice").value(95.0));
     }
 
+    @Test
+    @DisplayName("POST /api/books/price/calculate → returns 400 Bad Request when bookList is missing")
+    void testCalculatePriceOfMissingBookList() throws Exception {
+        Mockito.when(bookService.calculateBookPrice(null))
+                .thenThrow(new IllegalArgumentException("bookList must not be null"));
+
+        String badRequestJson = """
+        {
+            "unknownField": "invalid"
+        }
+        """;
+
+        mockMvc.perform(post("/api/books/price/calculate")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(badRequestJson))
+                .andExpect(status().isBadRequest());
+    }
+
+
 
 }

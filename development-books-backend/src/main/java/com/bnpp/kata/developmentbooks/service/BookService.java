@@ -40,6 +40,9 @@ public class BookService {
     }
 
     public BookPriceResponse calculateBookPrice(List<Book> bookList) {
+        if(bookList == null || bookList.isEmpty()){
+            throw new IllegalArgumentException("bookList must not be null");
+        }
         Map<String, Integer> mergedQuantities = bookList.stream()
                 .collect(Collectors.toMap(
                         book -> book.title().toLowerCase(),
