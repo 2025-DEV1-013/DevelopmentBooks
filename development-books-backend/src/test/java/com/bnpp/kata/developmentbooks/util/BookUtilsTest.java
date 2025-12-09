@@ -20,7 +20,7 @@ class BookUtilsTest {
 
     @Test
     @DisplayName("extractSortedCounts() → filters out null values")
-    void testExtractSortedCounts_nullValue() {
+    void testExtractSortedCountsForNullValue() {
         Map<String, Integer> input = new HashMap<>();
         input.put("clean code", null);
         List<Integer> result = BookUtils.extractSortedCounts(input);
@@ -29,7 +29,7 @@ class BookUtilsTest {
 
     @Test
     @DisplayName("extractSortedCounts() → filters out zero or negative values")
-    void testExtractSortedCounts_zeroOrNegative() {
+    void testExtractSortedCountsForZeroOrNegative() {
         Map<String, Integer> input = new HashMap<>();
         input.put("clean code", 0);
         input.put("tdd", -3);
@@ -39,7 +39,7 @@ class BookUtilsTest {
 
     @Test
     @DisplayName("extractSortedCounts() → returns sorted positive values")
-    void testExtractSortedCounts_positiveValues() {
+    void testExtractSortedCountsForPositiveValues() {
         Map<String, Integer> input = new HashMap<>();
         input.put("a", 1);
         input.put("b", 4);
@@ -53,13 +53,13 @@ class BookUtilsTest {
     // ------------------------------
     @Test
     @DisplayName("normalizeTitle() → trims and lowercases valid text")
-    void testNormalizeTitle_valid() {
+    void testNormalizeTitleForValid() {
         assertEquals("clean code", BookUtils.normalizeTitle("  Clean Code "));
     }
 
     @Test
     @DisplayName("normalizeTitle() → returns empty string for null or blank")
-    void testNormalizeTitle_blank() {
+    void testNormalizeTitleForBlank() {
         assertEquals("", BookUtils.normalizeTitle(null));
         assertEquals("", BookUtils.normalizeTitle(""));
         assertEquals("", BookUtils.normalizeTitle("   "));
@@ -68,7 +68,6 @@ class BookUtilsTest {
     // ------------------------------
     // mergeDuplicateTitles()
     // ------------------------------
-
     @Test
     @DisplayName("mergeDuplicateTitles() → merges and sums duplicate titles (case-insensitive)")
     void testMergeDuplicateTitles() {
@@ -87,7 +86,7 @@ class BookUtilsTest {
     // ------------------------------
     @Test
     @DisplayName("extractSortedCounts() → filters nulls and non-positive numbers and sorts descending")
-    void testExtractSortedCounts_valid() {
+    void testExtractSortedCountsValid() {
         Map<String, Integer> map = new HashMap<>();
         map.put("a", 3);
         map.put("b", 0);
@@ -100,7 +99,7 @@ class BookUtilsTest {
 
     @Test
     @DisplayName("extractSortedCounts() → throws when map is null (100% branch coverage)")
-    void testExtractSortedCounts_nullMap() {
+    void testExtractSortedCountsForNullMap() {
         InvalidBookException ex =
                 assertThrows(InvalidBookException.class, () -> BookUtils.extractSortedCounts(null));
         assertEquals("Merged books map must not be null", ex.getMessage());
@@ -111,13 +110,13 @@ class BookUtilsTest {
     // ------------------------------
     @Test
     @DisplayName("validateBasket() → throws when list is null")
-    void testValidateBasket_null() {
+    void testValidateBasketForNull() {
         assertThrows(InvalidBookException.class, () -> BookUtils.validateBasket(null));
     }
 
     @Test
     @DisplayName("validateBasket() → throws when list is empty")
-    void testValidateBasket_Empty() {
+    void testValidateBasketForEmpty() {
         List<Book> emptyList = List.of();
         assertThrows(InvalidBookException.class,
                 () -> BookUtils.validateBasket(emptyList));
@@ -125,7 +124,7 @@ class BookUtilsTest {
 
     @Test
     @DisplayName("validateBasket() → throws when no book has quantity > 0")
-    void testValidateBasket_noPositiveQuantity() {
+    void testValidateBasketForNoPositiveQuantity() {
         List<Book> items = List.of(
                 new Book("A", 0),
                 new Book("B", 0)
@@ -135,7 +134,7 @@ class BookUtilsTest {
 
     @Test
     @DisplayName("validateBasket() → succeeds when valid and contains at least one positive quantity")
-    void testValidateBasket_success() {
+    void testValidateBasketForSuccess() {
         List<Book> items = List.of(
                 new Book("A", 0),
                 new Book("B", 2)
@@ -146,13 +145,11 @@ class BookUtilsTest {
     // ------------------------------
     // validateBook() — private method via validateBasket()
     // ------------------------------
-
     @Test
     @DisplayName("validateBook() → throws when book is null (100% coverage of missing branch)")
-    void testValidateBook_null() {
+    void testValidateBookForNull() {
         List<Book> list = new ArrayList<>();
         list.add(null);
-
         InvalidBookException ex =
                 assertThrows(InvalidBookException.class, () -> BookUtils.validateBasket(list));
         assertEquals("Book entry must not be null", ex.getMessage());
@@ -160,9 +157,8 @@ class BookUtilsTest {
 
     @Test
     @DisplayName("validateBook() → throws when title is null or empty")
-    void testValidateBook_invalidTitle() {
+    void testValidateBookForInvalidTitle() {
         List<Book> list = List.of(new Book("   ", 1));
-
         InvalidBookException ex =
                 assertThrows(InvalidBookException.class, () -> BookUtils.validateBasket(list));
         assertEquals("Book title must not be null or empty", ex.getMessage());
@@ -170,9 +166,8 @@ class BookUtilsTest {
 
     @Test
     @DisplayName("validateBook() → throws when quantity is negative")
-    void testValidateBook_negativeQty() {
+    void testValidateBookForNegativeQty() {
         List<Book> list = List.of(new Book("Clean Code", -5));
-
         InvalidBookException ex =
                 assertThrows(InvalidBookException.class, () -> BookUtils.validateBasket(list));
         assertTrue(ex.getMessage().contains("must not be negative"));

@@ -26,4 +26,40 @@ class GlobalExceptionHandlerTest {
         assertEquals("Bad arg", response.getBody().get("error"));
     }
 
+    @Test
+    @DisplayName("handleInvalidBasketException → should return BAD_REQUEST when status is null")
+    void testInvalidBookExceptionForDefaultStatus() {
+        InvalidBookException ex = new InvalidBookException("Invalid book error", null);
+
+        ResponseEntity<Map<String, Object>> response =
+                handler.handleInvalidBasketException(ex);
+
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        assertEquals("Invalid book error", response.getBody().get("error"));
+    }
+
+    @Test
+    @DisplayName("handleInvalidBasketException → should use provided status")
+    void testInvalidBookExceptionforCustomStatus() {
+        InvalidBookException ex = new InvalidBookException("Custom", HttpStatus.CONFLICT);
+
+        ResponseEntity<Map<String, Object>> response =
+                handler.handleInvalidBasketException(ex);
+
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+        assertEquals("Custom", response.getBody().get("error"));
+    }
+
+    @Test
+    @DisplayName("handleGenericException → should return INTERNAL_SERVER_ERROR")
+    void testGenericException() {
+        Exception ex = new Exception("Unexpected");
+
+        ResponseEntity<Map<String, Object>> response =
+                handler.handleGenericException(ex);
+
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        assertEquals("Internal server error", response.getBody().get("error"));
+    }
+
 }

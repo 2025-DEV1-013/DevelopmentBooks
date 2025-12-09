@@ -3,6 +3,7 @@ package com.bnpp.kata.developmentbooks.controller;
 
 import com.bnpp.kata.developmentbooks.dto.BookPriceResponse;
 import com.bnpp.kata.developmentbooks.dto.BookResponse;
+import com.bnpp.kata.developmentbooks.exception.InvalidBookException;
 import com.bnpp.kata.developmentbooks.service.BookService;
 import org.junit.jupiter.api.DisplayName;
 import org.mockito.Mockito;
@@ -37,11 +38,11 @@ class BookControllerTest {
 
         when(bookService.getAllBooks()).thenReturn(
                 List.of(
-                        new BookResponse(1, "Clean Code", "Robert Martin", 2008, 50.0),
-                        new BookResponse(2, "The Clean Coder", "Robert Martin", 2011, 50.0),
-                        new BookResponse(3, "Clean Architecture", "Robert Martin", 2017, 50.0),
-                        new BookResponse(4, "Test Driven Development by Example", "Kent Beck", 2003, 50.0),
-                        new BookResponse(5, "Working Effectively with Legacy Code", "Michael Feathers", 2004, 50.0)
+                        new BookResponse(1, "Clean Code", "Robert Martin", 2008, 50.0, "Clean_Code.jpg"),
+                        new BookResponse(2, "The Clean Coder", "Robert Martin", 2011, 50.0, "The_Clean_Coder.jpg" ),
+                        new BookResponse(3, "Clean Architecture", "Robert Martin", 2017, 50.0, "Clean_Architecture.jpg"),
+                        new BookResponse(4, "Test Driven Development by Example", "Kent Beck", 2003, 50.0, "TDD.jpg"),
+                        new BookResponse(5, "Working Effectively with Legacy Code", "Michael Feathers", 2004, 50.0, "Legacy.jpg")
                 )
         );
 
@@ -96,6 +97,62 @@ class BookControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @Test
+    @DisplayName("POST /api/books/price/calculate → returns 400 Bad Request when quantity is negative")
+    void testCalculatePriceOfNegativeQuantity() throws Exception {
 
+        Mockito.when(bookService.calculateBookPrice(anyList()))
+                .thenThrow(new IllegalArgumentException("Quantity must be >= 0"));
 
+        String invalidJson = """
+        {
+          "bookList": [
+            { "title": "Clean Code", "quantity": -1 }
+          ]
+        }
+        """;
+
+        mockMvc.perform(post("/api/books/price/calculate")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidJson))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("POST /api/books/price/calculate → Handle IllegalArgumentException")
+    void testHandleIllegalArgumentException() throws Exception {
+
+        Mockito.when(bookService.calculateBookPrice(anyList()))
+                .thenThrow(new IllegalArgumentException("Validation failed"));
+
+        String json = """
+      {
+        "bookList": [
+          { "title": "", "quantity": 1 }
+        ]
+      }
+      """;
+
+        mockMvc.perform(post("/api/books/price/calculate")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Validation failed"));
+    }
+
+    @Test
+    void testHandleInvalidBookException() throws Exception {
+        when(bookService.calculateBookPrice(anyList()))
+                .thenThrow(new InvalidBookException("Qty invalid"));
+
+        String json = """
+      { "bookList": [ { "title": "Clean Code", "quantity": -5 } ] }
+      """;
+
+        mockMvc.perform(post("/api/books/price/calculate")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Qty invalid"));
+    }
 }

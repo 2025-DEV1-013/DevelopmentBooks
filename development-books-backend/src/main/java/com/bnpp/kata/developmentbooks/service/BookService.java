@@ -41,6 +41,7 @@ public class BookService {
      * Calculate the total and discounted price for a given book list.
      */
     public BookPriceResponse calculateBookPrice(List<Book> books) {
+        log.info("Calculate Book Price");
         BookUtils.validateBasket(books);
 
         Map<String, Integer> mergedBooks = BookUtils.mergeDuplicateTitles(books);

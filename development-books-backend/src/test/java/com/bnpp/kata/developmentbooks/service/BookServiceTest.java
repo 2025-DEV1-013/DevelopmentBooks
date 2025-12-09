@@ -40,7 +40,8 @@ class BookServiceTest {
                             bookEnum.title,
                             bookEnum.author,
                             bookEnum.year,
-                            bookEnum.price
+                            bookEnum.price,
+                            bookEnum.imageUrl
                     ));
         }
         List<BookResponse> result = bookService.getAllBooks();
@@ -93,7 +94,7 @@ class BookServiceTest {
 
     @Test
     @DisplayName("Apply 25% discount for all five different books")
-    void testAllFiveBooks_25PercentDiscount() {
+    void testAllFiveBooksFor25PercentDiscount() {
         List<Book> items = List.of(
                 new Book("Clean Code", 1),
                 new Book("The Clean Coder", 1),
