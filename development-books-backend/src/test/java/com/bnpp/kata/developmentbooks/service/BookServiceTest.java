@@ -1,6 +1,7 @@
 package com.bnpp.kata.developmentbooks.service;
 
 import com.bnpp.kata.developmentbooks.dto.Book;
+import com.bnpp.kata.developmentbooks.dto.BookPriceResponse;
 import com.bnpp.kata.developmentbooks.dto.BookResponse;
 import com.bnpp.kata.developmentbooks.mapper.BookMapper;
 import com.bnpp.kata.developmentbooks.store.BookEnum;
@@ -147,5 +148,18 @@ class BookServiceTest {
         double price = bookService.calculateBookPrice(items).discountPrice();
         assertEquals(6 * 50.0, price, 0.01);
     }
+
+    @Test
+    @DisplayName("Validate bookList, totalPrice and discountPrice for single title with no discount")
+    void testPriceResponseFields_noDiscount() {
+
+        List<Book> items = List.of(new Book("Clean Code", 3));
+        BookPriceResponse response = bookService.calculateBookPrice(items);
+        assertThat(response.bookList()).hasSize(1);
+        assertEquals(items, response.bookList());
+        assertEquals(150.0, response.totalPrice(), 0.01);
+        assertEquals(150.0, response.discountPrice(), 0.01);
+    }
+
 
 }

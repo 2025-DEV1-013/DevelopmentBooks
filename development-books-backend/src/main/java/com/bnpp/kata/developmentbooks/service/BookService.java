@@ -75,11 +75,14 @@ public class BookService {
 
         optimizeGroupsWithBooks(groupSizes);
         double discountPrice = 0.0;
+        int totalCount = 0;
         for (int size : groupSizes) {
+            totalCount +=size;
             double discount = DISCOUNTS.getOrDefault(size, 0.0);
             discountPrice += size * BOOK_PRICE * (1 - discount);
         }
-        return new BookPriceResponse(discountPrice);
+        log.info("TotalCount ="+totalCount);
+        return new BookPriceResponse(bookList, (totalCount*BOOK_PRICE), discountPrice);
     }
 
     private void optimizeGroupsWithBooks(List<Integer> groups) {

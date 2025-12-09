@@ -58,7 +58,7 @@ class BookControllerTest {
     void testCalculatePriceSuccess() throws Exception {
 
         Mockito.when(bookService.calculateBookPrice(anyList()))
-                .thenReturn(new BookPriceResponse(95.0));
+                .thenReturn(new BookPriceResponse(List.of(), 100.0,95.0));
 
         String requestJson = """
                 {
