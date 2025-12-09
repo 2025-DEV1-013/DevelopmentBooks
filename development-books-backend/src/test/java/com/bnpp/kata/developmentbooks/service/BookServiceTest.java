@@ -136,4 +136,16 @@ class BookServiceTest {
         assertEquals(320.0, bookService.calculateBookPrice(items), 0.01);
     }
 
+    @Test
+    @DisplayName("Merge duplicate book titles ignoring case and sum their quantities")
+    void testCaseInsensitiveMerging() {
+        List<Book> items = List.of(
+                new Book("clean code", 1),
+                new Book("Clean Code", 2),
+                new Book("CLEAN CODE", 3)
+        );
+        double price = bookService.calculateBookPrice(items);
+        assertEquals(6 * 50.0, price, 0.01);
+    }
+
 }

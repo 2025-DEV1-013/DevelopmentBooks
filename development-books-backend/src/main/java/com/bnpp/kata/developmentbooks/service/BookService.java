@@ -39,12 +39,21 @@ public class BookService {
     }
 
     public double calculateBookPrice(List<Book> bookList) {
+        Map<String, Integer> mergedQuantities = bookList.stream()
+                .collect(Collectors.toMap(
+                        book -> book.title().toLowerCase(),      // normalize
+                        Book::quantity,                     // quantity
+                        Integer::sum                        // merge duplicates
+                ));
+
+        // Step 2️⃣  Expand merged quantities into a list of individual copies
         List<String> allCopies = new ArrayList<>();
-        for (Book book : bookList) {
-            for (int i = 0; i < book.quantity(); i++) {
-                allCopies.add(book.title());
+        mergedQuantities.forEach((title, qty) -> {
+            for (int i = 0; i < qty; i++) {
+                allCopies.add(title);
             }
-        }
+        });
+
         List<String> limitedCopies = allCopies.stream()
                 .limit(8)
                 .toList();
@@ -64,13 +73,13 @@ public class BookService {
             }
             groupSizes.add(uniqueTitles);
         }
+
         optimizeGroupsWithBooks(groupSizes);
         double totalPrice = 0.0;
         for (int size : groupSizes) {
             double discount = DISCOUNTS.getOrDefault(size, 0.0);
             totalPrice += size * BOOK_PRICE * (1 - discount);
         }
-
         return totalPrice;
     }
 
