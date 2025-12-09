@@ -10,7 +10,7 @@ class BookEnumTest {
 
     @Test
     @DisplayName("BookEnum should contain exactly 5 books")
-    void testEnumCount() {
+    void testEnumToCount5Books() {
         assertEquals(5, BookEnum.values().length,
                 "Enum must contain exactly 5 predefined books");
     }
