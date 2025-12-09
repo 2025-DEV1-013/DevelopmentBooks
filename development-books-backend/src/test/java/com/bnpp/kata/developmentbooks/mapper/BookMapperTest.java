@@ -1,7 +1,7 @@
 package com.bnpp.kata.developmentbooks.mapper;
 
 
-import com.bnpp.kata.developmentbooks.dto.BookResponse;
+import com.bnpp.kata.developmentbooks.model.BookResponse;
 import com.bnpp.kata.developmentbooks.store.BookEnum;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,12 +24,12 @@ class BookMapperTest {
         BookResponse response = mapper.toResponse(bookEnum);
 
         assertThat(response).isNotNull();
-        assertThat(response.id()).isEqualTo(bookEnum.id);
-        assertThat(response.title()).isEqualTo(bookEnum.title);
-        assertThat(response.author()).isEqualTo(bookEnum.author);
-        assertThat(response.year()).isEqualTo(bookEnum.year);
-        assertThat(response.price()).isEqualTo(bookEnum.price);
-        assertThat(response.imageUrl()).isEqualTo(bookEnum.imageUrl);
+        assertThat(response.getId()).isEqualTo(bookEnum.id);
+        assertThat(response.getTitle()).isEqualTo(bookEnum.title);
+        assertThat(response.getAuthor()).isEqualTo(bookEnum.author);
+        assertThat(response.getYear()).isEqualTo(bookEnum.year);
+        assertThat(response.getPrice()).isEqualTo(bookEnum.price);
+        assertThat(response.getImageUrl()).isEqualTo(bookEnum.imageUrl);
     }
 
     @Test

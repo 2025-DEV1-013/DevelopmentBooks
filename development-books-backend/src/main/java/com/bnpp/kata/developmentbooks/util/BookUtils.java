@@ -1,6 +1,6 @@
 package com.bnpp.kata.developmentbooks.util;
 
-import com.bnpp.kata.developmentbooks.dto.Book;
+import com.bnpp.kata.developmentbooks.model.Book;
 import com.bnpp.kata.developmentbooks.exception.InvalidBookException;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -22,11 +22,10 @@ public final class BookUtils {
 
     public static Map<String, Integer> mergeDuplicateTitles(List<Book> items) {
         validateBasket(items);
-
         return items.stream()
                 .collect(Collectors.toMap(
-                        item -> normalizeTitle(item.title()),
-                        Book::quantity,
+                        item -> normalizeTitle(item.getTitle()),
+                        Book::getQuantity,
                         Integer::sum
                 ));
     }
@@ -54,7 +53,7 @@ public final class BookUtils {
         for (Book item : items) {
             validateBook(item);
 
-            if (item.quantity() > 0) {
+            if (item.getQuantity() > 0) {
                 containsPositiveQuantity = true;
             }
         }
@@ -69,13 +68,13 @@ public final class BookUtils {
             throw new InvalidBookException("Book entry must not be null");
         }
 
-        if (!StringUtils.hasText(book.title())) {
+        if (!StringUtils.hasText(book.getTitle())) {
             throw new InvalidBookException("Book title must not be null or empty");
         }
 
-        if (book.quantity() < 0) {
+        if (book.getQuantity() < 0) {
             throw new InvalidBookException(
-                    "Quantity for book '%s' must not be negative".formatted(book.title().trim())
+                    "Quantity for book '%s' must not be negative".formatted(book.getTitle().trim())
             );
         }
     }

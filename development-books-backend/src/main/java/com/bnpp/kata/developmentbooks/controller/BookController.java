@@ -1,9 +1,9 @@
 package com.bnpp.kata.developmentbooks.controller;
 
 
-import com.bnpp.kata.developmentbooks.dto.BookBasketRequest;
-import com.bnpp.kata.developmentbooks.dto.BookPriceResponse;
-import com.bnpp.kata.developmentbooks.dto.BookResponse;
+import com.bnpp.kata.developmentbooks.model.BookBasketRequest;
+import com.bnpp.kata.developmentbooks.model.BookPriceResponse;
+import com.bnpp.kata.developmentbooks.model.BookResponse;
 import com.bnpp.kata.developmentbooks.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,7 +37,7 @@ public class BookController {
     @PostMapping("/price/calculate")
     public ResponseEntity<BookPriceResponse> calculatePrice(@RequestBody BookBasketRequest request) {
         log.info("Hit endpoint: POST /api/books/price/calculate  body={}", request);
-        BookPriceResponse bookPriceResponse = bookService.calculateBookPrice(request.bookList());
+        BookPriceResponse bookPriceResponse = bookService.calculateBookPrice(request.getBookList());
         return ResponseEntity.ok(bookPriceResponse);
     }
 }

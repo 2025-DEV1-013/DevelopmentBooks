@@ -1,8 +1,8 @@
 package com.bnpp.kata.developmentbooks.controller;
 
 
-import com.bnpp.kata.developmentbooks.dto.BookPriceResponse;
-import com.bnpp.kata.developmentbooks.dto.BookResponse;
+import com.bnpp.kata.developmentbooks.model.BookPriceResponse;
+import com.bnpp.kata.developmentbooks.model.BookResponse;
 import com.bnpp.kata.developmentbooks.exception.InvalidBookException;
 import com.bnpp.kata.developmentbooks.service.BookService;
 import org.junit.jupiter.api.DisplayName;

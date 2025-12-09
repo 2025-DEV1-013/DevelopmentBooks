@@ -1,6 +1,6 @@
 package com.bnpp.kata.developmentbooks.util;
 
-import com.bnpp.kata.developmentbooks.dto.Book;
+import com.bnpp.kata.developmentbooks.model.Book;
 import com.bnpp.kata.developmentbooks.exception.InvalidBookException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

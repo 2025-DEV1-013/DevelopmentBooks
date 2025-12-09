@@ -1,8 +1,8 @@
 package com.bnpp.kata.developmentbooks.service;
 
-import com.bnpp.kata.developmentbooks.dto.Book;
-import com.bnpp.kata.developmentbooks.dto.BookPriceResponse;
-import com.bnpp.kata.developmentbooks.dto.BookResponse;
+import com.bnpp.kata.developmentbooks.model.Book;
+import com.bnpp.kata.developmentbooks.model.BookPriceResponse;
+import com.bnpp.kata.developmentbooks.model.BookResponse;
 import com.bnpp.kata.developmentbooks.exception.InvalidBookException;
 import com.bnpp.kata.developmentbooks.mapper.BookMapper;
 import com.bnpp.kata.developmentbooks.store.BookEnum;
@@ -94,9 +94,9 @@ class BookServiceTest {
 
             BookPriceResponse response = bookService.calculateBookPrice(input);
 
-            assertEquals(100.0, response.totalPrice());
-            assertEquals(95.0, response.discountPrice());
-            assertEquals(2, response.bookList().size());
+            assertEquals(100.0, response.getTotalPrice());
+            assertEquals(95.0, response.getDiscountPrice());
+            assertEquals(2, response.getBookList().size());
         }
     }
 

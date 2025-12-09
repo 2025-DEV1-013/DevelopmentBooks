@@ -1,8 +1,8 @@
 package com.bnpp.kata.developmentbooks.service;
 
-import com.bnpp.kata.developmentbooks.dto.Book;
-import com.bnpp.kata.developmentbooks.dto.BookPriceResponse;
-import com.bnpp.kata.developmentbooks.dto.BookResponse;
+import com.bnpp.kata.developmentbooks.model.Book;
+import com.bnpp.kata.developmentbooks.model.BookPriceResponse;
+import com.bnpp.kata.developmentbooks.model.BookResponse;
 import com.bnpp.kata.developmentbooks.exception.InvalidBookException;
 import com.bnpp.kata.developmentbooks.mapper.BookMapper;
 import com.bnpp.kata.developmentbooks.store.BookEnum;
@@ -12,11 +12,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
