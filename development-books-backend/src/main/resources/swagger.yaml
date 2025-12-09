@@ -1,0 +1,133 @@
+openapi: 3.0.3
+info:
+  title: Book Pricing API
+  version: 1.0.0
+  description: API for fetching books and calculating discounted prices.
+
+servers:
+  - url: http://localhost:8090
+
+paths:
+  /api/books:
+    get:
+      summary: Get all development books
+      operationId: getAllBooks
+      tags:
+        - Books
+      responses:
+        '200':
+          description: A list of books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookResponse'
+
+  /api/books/price:
+    post:
+      summary: Calculate price for a basket of books
+      operationId: calculatePrice
+      tags:
+        - Books
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookBasketRequest'
+            examples:
+              basketExample:
+                value:
+                  bookList:
+                    - title: "Clean Code"
+                      quantity: 2
+                    - title: "Refactoring"
+                      quantity: 1
+      responses:
+        '200':
+          description: Price calculation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookPriceResponse'
+
+components:
+  schemas:
+
+    Book:
+      type: object
+      required:
+        - title
+        - quantity
+      properties:
+        title:
+          type: string
+          example: "Clean Code"
+        quantity:
+          type: integer
+          format: int32
+          minimum: 0
+          example: 2
+
+    BookBasketRequest:
+      type: object
+      required:
+        - bookList
+      properties:
+        bookList:
+          type: array
+          items:
+            $ref: '#/components/schemas/Book'
+
+    BookResponse:
+      type: object
+      required:
+        - id
+        - title
+        - author
+        - year
+        - price
+        - imageUrl
+      properties:
+        id:
+          type: integer
+          format: int32
+          example: 1
+        title:
+          type: string
+          example: "Clean Code"
+        author:
+          type: string
+          example: "Robert C. Martin"
+        year:
+          type: integer
+          format: int32
+          example: 2008
+        price:
+          type: number
+          format: double
+          example: 50.0
+        imageUrl:
+          type: string
+          example: "Kata_DevelopmentBooks_CleanCode.png"
+
+    BookPriceResponse:
+      type: object
+      required:
+        - bookList
+        - totalPrice
+        - discountPrice
+      properties:
+        bookList:
+          type: array
+          items:
+            $ref: '#/components/schemas/Book'
+        totalPrice:
+          type: number
+          format: double
+          example: 150.0
+        discountPrice:
+          type: number
+          format: double
+          example: 135.0
