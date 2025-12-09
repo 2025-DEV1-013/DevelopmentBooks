@@ -102,4 +102,13 @@ class BookServiceTest {
         );
         assertEquals(187.50, bookService.calculateBookPrice(items), 0.01);
     }
+
+    @Test
+    @DisplayName("Calculate price when multiple copies of a single title are purchased with no discount")
+    void testSameTitleMultipleCopiesWithNoDiscount() {
+        List<Book> items = List.of(
+                new Book("Clean Code", 3)
+        );
+        assertEquals(150.0, bookService.calculateBookPrice(items), 0.01);
+    }
 }

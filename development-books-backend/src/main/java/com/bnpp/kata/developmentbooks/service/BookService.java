@@ -37,8 +37,17 @@ public class BookService {
     }
 
     public double calculateBookPrice(List<Book> bookList) {
-        int bookCount = bookList.size();
-        double discount = DISCOUNTS.getOrDefault(bookCount, 0.0);
-        return (BOOK_PRICE * bookCount) * (1 - discount);
+
+        int uniqueTitles = (int) bookList.stream()
+                .map(Book::title)
+                .distinct()
+                .count();
+
+        int totalCopies = bookList.stream()
+                .mapToInt(Book::quantity)
+                .sum();
+
+        double discount = DISCOUNTS.getOrDefault(uniqueTitles , 0.0);
+        return (BOOK_PRICE * totalCopies) * (1 - discount);
     }
 }
