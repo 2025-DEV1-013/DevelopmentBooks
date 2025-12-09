@@ -1,5 +1,6 @@
 package com.bnpp.kata.developmentbooks.service;
 
+import com.bnpp.kata.developmentbooks.dto.Book;
 import com.bnpp.kata.developmentbooks.dto.BookResponse;
 import com.bnpp.kata.developmentbooks.mapper.BookMapper;
 import com.bnpp.kata.developmentbooks.store.BookEnum;
@@ -22,5 +23,9 @@ public class BookService {
         return Arrays.stream(BookEnum.values())
                 .map(mapper::toResponse)
                 .toList();
+    }
+
+    public double calculateBookPrice(List<Book> bookList) {
+        return 50.0;
     }
 }

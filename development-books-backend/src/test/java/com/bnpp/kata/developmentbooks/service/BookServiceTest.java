@@ -1,5 +1,6 @@
 package com.bnpp.kata.developmentbooks.service;
 
+import com.bnpp.kata.developmentbooks.dto.Book;
 import com.bnpp.kata.developmentbooks.dto.BookResponse;
 import com.bnpp.kata.developmentbooks.mapper.BookMapper;
 import com.bnpp.kata.developmentbooks.store.BookEnum;
@@ -31,8 +32,6 @@ class BookServiceTest {
     @Test
     @DisplayName("getAllBooks() → returns exactly 5 books from enum")
     void testGetAllBooksCount() {
-
-        // Prepare mock mapping for each enum value
         for (BookEnum bookEnum : BookEnum.values()) {
             when(mapper.toResponse(bookEnum))
                     .thenReturn(new BookResponse(
@@ -43,12 +42,18 @@ class BookServiceTest {
                             bookEnum.price
                     ));
         }
-
         List<BookResponse> result = bookService.getAllBooks();
-
         assertThat(result).hasSize(BookEnum.values().length);
         assertEquals(5, result.size());
-
         verify(mapper, times(BookEnum.values().length)).toResponse(any());
+    }
+
+    @Test
+    @DisplayName("Calculate price for a single book with no discount")
+    void testSingleBookWithNoDiscount() {
+        List<Book> items = List.of(
+                new Book("Clean Code", 1)
+        );
+        assertEquals(50.0, bookService.calculateBookPrice(items), 0.01);
     }
 }
