@@ -1,9 +1,11 @@
 package com.bnpp.kata.developmentbooks.controller;
 
 
+import com.bnpp.kata.developmentbooks.dto.BookPriceResponse;
 import com.bnpp.kata.developmentbooks.dto.BookResponse;
 import com.bnpp.kata.developmentbooks.service.BookService;
 import org.junit.jupiter.api.DisplayName;
+import org.mockito.Mockito;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.junit.jupiter.api.Test;
@@ -13,7 +15,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -48,5 +52,31 @@ class BookControllerTest {
                 .andExpect(jsonPath("$[0].title").value("Clean Code"))
                 .andExpect(jsonPath("$[4].title").value("Working Effectively with Legacy Code"));
     }
+
+    @Test
+    @DisplayName("POST /api/books/price/calculate → returns 200 OK with correct totalPrice")
+    void testCalculatePriceSuccess() throws Exception {
+
+        Mockito.when(bookService.calculateBookPrice(anyList()))
+                .thenReturn(new BookPriceResponse(95.0));
+
+        String requestJson = """
+                {
+                   "bookList": [
+                       { "title": "Clean Code", "quantity": 1 },
+                       { "title": "The Clean Coder", "quantity": 1 }
+                   ]
+                }
+                """;
+
+        mockMvc.perform(
+                        post("/api/books/price/calculate")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(requestJson)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.discountPrice").value(95.0));
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package com.bnpp.kata.developmentbooks.service;
 
 import com.bnpp.kata.developmentbooks.dto.Book;
+import com.bnpp.kata.developmentbooks.dto.BookPriceResponse;
 import com.bnpp.kata.developmentbooks.dto.BookResponse;
 import com.bnpp.kata.developmentbooks.mapper.BookMapper;
 import com.bnpp.kata.developmentbooks.store.BookEnum;
@@ -38,15 +39,13 @@ public class BookService {
                 .toList();
     }
 
-    public double calculateBookPrice(List<Book> bookList) {
+    public BookPriceResponse calculateBookPrice(List<Book> bookList) {
         Map<String, Integer> mergedQuantities = bookList.stream()
                 .collect(Collectors.toMap(
-                        book -> book.title().toLowerCase(),      // normalize
-                        Book::quantity,                     // quantity
-                        Integer::sum                        // merge duplicates
+                        book -> book.title().toLowerCase(),
+                        Book::quantity,
+                        Integer::sum
                 ));
-
-        // Step 2️⃣  Expand merged quantities into a list of individual copies
         List<String> allCopies = new ArrayList<>();
         mergedQuantities.forEach((title, qty) -> {
             for (int i = 0; i < qty; i++) {
@@ -59,10 +58,10 @@ public class BookService {
                 .toList();
 
         Map<String, Long> counts = limitedCopies.stream()
-                .collect(Collectors.groupingBy(t -> t, Collectors.counting()));
+                .collect(Collectors.groupingBy(total -> total, Collectors.counting()));
 
         List<Integer> groupSizes = new ArrayList<>();
-        while (counts.values().stream().anyMatch(q -> q > 0)) {
+        while (counts.values().stream().anyMatch(count -> count > 0)) {
             int uniqueTitles = 0;
             for (Map.Entry<String, Long> titleMap : counts.entrySet()) {
                 long qty = counts.get(titleMap.getKey());
@@ -75,12 +74,12 @@ public class BookService {
         }
 
         optimizeGroupsWithBooks(groupSizes);
-        double totalPrice = 0.0;
+        double discountPrice = 0.0;
         for (int size : groupSizes) {
             double discount = DISCOUNTS.getOrDefault(size, 0.0);
-            totalPrice += size * BOOK_PRICE * (1 - discount);
+            discountPrice += size * BOOK_PRICE * (1 - discount);
         }
-        return totalPrice;
+        return new BookPriceResponse(discountPrice);
     }
 
     private void optimizeGroupsWithBooks(List<Integer> groups) {
