@@ -56,4 +56,14 @@ class BookServiceTest {
         );
         assertEquals(50.0, bookService.calculateBookPrice(items), 0.01);
     }
+
+    @Test
+    @DisplayName("Apply 5% discount for two different books")
+    void testTwoDifferentBooksFor5PercentDiscount() {
+        List<Book> items = List.of(
+                new Book("Clean Code", 1),
+                new Book("The Clean Coder", 1)
+        );
+        assertEquals(95.0, bookService.calculateBookPrice(items), 0.01);
+    }
 }

@@ -16,6 +16,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookService {
 
+    private static final double BOOK_PRICE = 50.0;
+
     private final BookMapper mapper;
 
     public List<BookResponse> getAllBooks() {
@@ -26,6 +28,13 @@ public class BookService {
     }
 
     public double calculateBookPrice(List<Book> bookList) {
-        return 50.0;
+        int reqBookCount = bookList.size();
+        double totalPrice = 0.0;
+        if(reqBookCount == 1)
+            totalPrice = BOOK_PRICE * reqBookCount;
+        else if(reqBookCount == 2){
+            totalPrice = (BOOK_PRICE * reqBookCount) * (1 - 0.05);
+        }
+        return totalPrice;
     }
 }
