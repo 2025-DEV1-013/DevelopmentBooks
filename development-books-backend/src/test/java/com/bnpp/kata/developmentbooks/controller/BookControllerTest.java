@@ -1,0 +1,52 @@
+package com.bnpp.kata.developmentbooks.controller;
+
+
+import com.bnpp.kata.developmentbooks.dto.BookResponse;
+import com.bnpp.kata.developmentbooks.service.BookService;
+import org.junit.jupiter.api.DisplayName;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.http.MediaType;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest
+class BookControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockitoBean
+    private BookService bookService;
+
+    @Test
+    @DisplayName("GET /api/books/getbooks → returns 200 OK and all books")
+    void testGetAllBooksOnSuccess() throws Exception {
+
+        when(bookService.getAllBooks()).thenReturn(
+                List.of(
+                        new BookResponse(1, "Clean Code", "Robert Martin", 2008, 50.0),
+                        new BookResponse(2, "The Clean Coder", "Robert Martin", 2011, 50.0),
+                        new BookResponse(3, "Clean Architecture", "Robert Martin", 2017, 50.0),
+                        new BookResponse(4, "Test Driven Development by Example", "Kent Beck", 2003, 50.0),
+                        new BookResponse(5, "Working Effectively with Legacy Code", "Michael Feathers", 2004, 50.0)
+                )
+        );
+
+        mockMvc.perform(get("/api/books/getbooks")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(5))
+                .andExpect(jsonPath("$[0].title").value("Clean Code"))
+                .andExpect(jsonPath("$[4].title").value("Working Effectively with Legacy Code"));
+    }
+
+}
