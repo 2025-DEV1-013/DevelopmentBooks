@@ -111,4 +111,16 @@ class BookServiceTest {
         );
         assertEquals(150.0, bookService.calculateBookPrice(items), 0.01);
     }
+
+    @Test
+    @DisplayName("Choose multiple grouping when some titles have multiple copies")
+    void testThreeTitles_multipleCopies_mixedOptimal() {
+        List<Book> items = List.of(
+                new Book("Clean Code", 2),
+                new Book("Clean Architecture", 1),
+                new Book("The Clean Coder", 2)
+        );
+        assertEquals(230.0, bookService.calculateBookPrice(items), 0.01);
+    }
+
 }

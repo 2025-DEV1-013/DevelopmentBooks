@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -37,17 +38,24 @@ public class BookService {
     }
 
     public double calculateBookPrice(List<Book> bookList) {
+        double totalPrice = 0.0;
+        Map<String, Integer> quantities = bookList.stream()
+                .collect(Collectors.toMap(Book::title, Book::quantity));
 
-        int uniqueTitles = (int) bookList.stream()
-                .map(Book::title)
-                .distinct()
-                .count();
+        while (quantities.values().stream().anyMatch(count -> count > 0)) {
+            int uniqueCount = 0;
+            for (Map.Entry<String, Integer> title : quantities.entrySet()) {
+                int qty = quantities.get(title.getKey());
+                if (qty > 0) {
+                    uniqueCount++;
+                    quantities.put(title.getKey(), qty - 1);
+                }
+            }
 
-        int totalCopies = bookList.stream()
-                .mapToInt(Book::quantity)
-                .sum();
-
-        double discount = DISCOUNTS.getOrDefault(uniqueTitles , 0.0);
-        return (BOOK_PRICE * totalCopies) * (1 - discount);
+            // Apply discount based on the number of unique titles in this group
+            double discount = DISCOUNTS.getOrDefault(uniqueCount, 0.0);
+            totalPrice += (uniqueCount * BOOK_PRICE) * (1 - discount);
+        }
+        return totalPrice;
     }
 }
