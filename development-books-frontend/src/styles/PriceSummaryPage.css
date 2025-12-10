@@ -1,0 +1,56 @@
+/* Main container styling */
+.summary-container {
+    padding: 32px;
+    border-radius: 30px;
+    background: linear-gradient(145deg, #ffffff, #f3f6fa);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  }
+  
+  /* Header wrapper */
+  .summary-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .summary-header-icon {
+    font-size: 40px;
+    color: #1976d2;
+    margin-right: 10px;
+  }
+  
+  /* Total Price text */
+  .total-price {
+    font-weight: bold;
+    color: #555;
+    margin-top: 16px;
+    font-size: 1.6rem !important;
+  }
+    
+  /* Discount container */
+ .discount-box {
+  background: linear-gradient(90deg, #43a047, #66bb6a);
+  padding: 18px 26px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+/* Icon size */
+.discount-icon {
+  font-size: 32px;
+  color: white;
+}
+
+/* Highlighted text */
+.discount-price {
+  font-size: 1.8rem !important;     /* Bigger text */
+  font-weight: 900 !important;       /* Extra bold */
+  color: white;
+  letter-spacing: 0.5px;
+}
+
+  
