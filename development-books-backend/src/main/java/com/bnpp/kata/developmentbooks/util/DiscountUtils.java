@@ -1,14 +1,17 @@
 package com.bnpp.kata.developmentbooks.util;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 
 public final class DiscountUtils {
 
-    private static final double BOOK_PRICE = 50.0;
+    private static final double BOOK_UNIT_PRICE = 50.0;
 
-    private static final Map<Integer, Double> DISCOUNTS = Map.of(
+    private static final Map<Integer, Double> DISCOUNT_RATE_BY_GROUP_SIZE  = Map.of(
             1, 0.00,
             2, 0.05,
             3, 0.10,
@@ -20,37 +23,36 @@ public final class DiscountUtils {
 
 
     public static double computeOptimalPrice(List<Integer> counts) {
-        return compute(counts, new HashMap<>());
+        return calculateOptimalPrice(counts, new HashMap<>());
     }
 
-    private static double compute(List<Integer> counts, Map<String, Double> cache) {
+    private static double calculateOptimalPrice(List<Integer> counts, Map<String, Double> memoCache) {
 
-        List<Integer> normalized = normalize(counts);
+        List<Integer> normalizedCounts  = normalizeCounts(counts);
 
-        if (normalized.isEmpty()) {
+        if (normalizedCounts .isEmpty()) {
             return 0.0;
         }
 
-        String key = normalized.toString();
+        String cacheKey  = normalizedCounts.toString();
 
-        Double cached = cache.get(key);
-        if (Objects.nonNull(cached)) {
-            return cached;
+        if (memoCache.containsKey(cacheKey)) {
+            return memoCache.get(cacheKey);
         }
 
-        int maxGroupSize = normalized.size();
+        int maxPossibleGroupSize = normalizedCounts.size();
 
-        double bestPrice =
-                IntStream.rangeClosed(1, maxGroupSize)
-                        .mapToDouble(size -> computeCost(size, normalized, cache))
+        double optimalPrice  =
+                IntStream.rangeClosed(1, maxPossibleGroupSize)
+                        .mapToDouble(size -> computeCost(size, normalizedCounts , memoCache))
                         .min()
                         .orElse(Double.MAX_VALUE);
 
-        cache.put(key, bestPrice);
-        return bestPrice;
+        memoCache.put(cacheKey, optimalPrice);
+        return optimalPrice;
     }
 
-    private static List<Integer> normalize(List<Integer> counts) {
+    private static List<Integer> normalizeCounts(List<Integer> counts) {
         return counts.stream()
                 .filter(count -> count > 0)
                 .sorted(Comparator.reverseOrder())
@@ -66,11 +68,11 @@ public final class DiscountUtils {
                 .toList();
 
         double groupCost = calculateGroupCost(groupSize);
-        return groupCost + compute(nextState, cache);
+        return groupCost + calculateOptimalPrice(nextState, cache);
     }
 
     private static double calculateGroupCost(int groupSize) {
-        double discount = DISCOUNTS.getOrDefault(groupSize, 0.0);
-        return groupSize * BOOK_PRICE * (1 - discount);
+        double discount = DISCOUNT_RATE_BY_GROUP_SIZE.getOrDefault(groupSize, 0.0);
+        return groupSize * BOOK_UNIT_PRICE * (1 - discount);
     }
 }
