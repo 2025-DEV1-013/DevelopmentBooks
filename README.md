@@ -48,14 +48,14 @@ We can avail the discounts for above shopping basket containing 8 books by group
 # Tools & Tech Stack
 ### Backend – Tools & Libraries
 
-- **Language:** Java 21
-- **Framework:** Spring Boot 4.x (Spring MVC)
+- **Language:** Java
+- **Framework:** Spring Boot (Spring MVC)
 - **Build Tool:** Maven
 - **Mapping:** MapStruct
 - **Validation & Exceptions:** Spring Validation, custom exception handlers
 - **API Documentation:** springdoc-openapi (Swagger UI)
 - **Code Coverage:** JaCoCo
-- **Testing:** JUnit 5, Mockito, Spring WebMVC Test (`@WebMvcTest`)
+- **Testing:** JUnit, Mockito, Spring WebMVC Test (`@WebMvcTest`)
 
 ### Frontend – Tools & Libraries
 
@@ -75,7 +75,7 @@ Install the following on your machine:
 
 - Maven 3.9+
 
-- Node.js 18+ and npm 9+
+- Node.js 18+ and NPM 9+
 
 - Git (optional, for version control)
 
@@ -93,11 +93,19 @@ First clone the git repository or download the source code form this link :
 ```bash
 https://github.com/2025-DEV1-013/DevelopmentBooks.git
 ```
+Go to project directory :
+```bash
+cd DevelopmentBooks
+```
 To run the application locally:
 ### Backend
 ```bash
 cd book-discount-price-backend
+```
+```bash
 mvn spring-boot:run            # run app
+```
+```bash
 mvn clean package              # build jar
 ```
 Verify:
@@ -110,7 +118,11 @@ http://localhost:8090/api/books/price/calculate (POST with JSON)
 
 ```bash
 cd development-books-frontend
+```
+```bash
 npm install                    # install dependencies, only required first time
+```
+```bash
 npm run dev                    # start Vite dev server (URL : http://localhost:5173)
 
 ```
@@ -124,6 +136,11 @@ To Execute Test locally:
 ### Backend
 ```bash
 cd book-discount-price-backend
+```
+```bash
+mvn clean install              #Build without running
+```
+```bash
 mvn clean test                 # run tests + Jacoco
 ```
 This will:
@@ -140,7 +157,11 @@ book-discount-price-backend/target/site/jacoco/index.html
 
 ```bash
 cd development-books-frontend
+```
+```bash
 npm test                       # run unit tests (Vitest)
+```
+```bash
 npm run test:ui                # web-based dashboard (URL : http://localhost:51204/__vitest__)
 ```
 The frontend coverage html report will be at:
