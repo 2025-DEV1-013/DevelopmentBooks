@@ -1,9 +1,6 @@
 package com.bnpp.kata.developmentbooks.util;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.IntStream;
 
 
@@ -37,7 +34,7 @@ public final class DiscountUtils {
         String key = normalized.toString();
 
         Double cached = cache.get(key);
-        if (cached != null) {
+        if (Objects.nonNull(cached)) {
             return cached;
         }
 

@@ -43,11 +43,11 @@ public class BookService {
         BookUtils.validateBasket(books);
 
         Map<String, Integer> mergedBooks = BookUtils.mergeDuplicateTitles(books);
-        List<Integer> sortedCounts = BookUtils.extractSortedCounts(mergedBooks);
+        List<Integer> sortedBookCounts = BookUtils.extractSortedCounts(mergedBooks);
 
-        validateCounts(sortedCounts);
+        validateBasketCounts(sortedBookCounts);
 
-        double discountedPrice = DiscountUtils.computeOptimalPrice(sortedCounts);
+        double discountedPrice = DiscountUtils.computeOptimalPrice(sortedBookCounts);
         double originalPrice = calculateOriginalPrice(mergedBooks);
 
         List<Book> finalMergedBooks = convertToBookList(mergedBooks);
@@ -55,7 +55,7 @@ public class BookService {
         return new BookPriceResponse(finalMergedBooks, originalPrice, discountedPrice);
     }
 
-    private void validateCounts(List<Integer> sortedCounts) {
+    private void validateBasketCounts(List<Integer> sortedCounts) {
         if (sortedCounts.isEmpty()) {
             throw new InvalidBookException("Basket must contain at least one book with quantity > 0");
         }

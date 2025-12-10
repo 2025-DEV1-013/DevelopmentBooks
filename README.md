@@ -102,18 +102,21 @@ mvn clean package              # build jar
 ```
 Verify:
 
-http://localhost:8081/api/books/getbooks
+http://localhost:8090/api/books/getbooks
 
-http://localhost:8081/api/books/price/calculate (POST with JSON)
+http://localhost:8090/api/books/price/calculate (POST with JSON)
 
 ### Frontend
 
 ```bash
 cd development-books-frontend
-npm install                    # install deps
+npm install                    # install dependencies, only required first time
 npm run dev                    # start Vite dev server (URL : http://localhost:5173)
 
 ```
+
+    Remember first run backend application, once backend up & running 
+    then run frontend app (`npm run dev`) to access the full application.
 
 # Build & Run Tests 
 
@@ -131,7 +134,7 @@ Run all JUnit tests
 
 Generate JaCoCo code coverage report at:
 ```bash
-book-discount-price-backend/target/site/jacoco/index.html
+book-discount-price-backend/target/site/jacoco/index.html 
 ```
 ### Frontend
 
@@ -142,7 +145,7 @@ npm run test:ui                # web-based dashboard (URL : http://localhost:512
 ```
 The frontend coverage html report will be at:
 ```bash
-development-books-frontend/coverage/index.html
+development-books-frontend/coverage/index.html OR access http://localhost:51204/__vitest__
 ```
 Open coverage/index.html in your browser.
 
@@ -170,10 +173,10 @@ Models:
 
 swagger.yaml (located in src/main/resources)
 
-openapi-generator-maven-plugin
+**openapi-generator-maven-plugin**
 → Automatically generates API models (DTOs) from YAML
 
-springdoc-openapi-starter
+**springdoc-openapi-starter**
 → Auto-generates live Swagger UI at runtime
 
 The backend exposes interactive Swagger UI using springdoc-openapi.

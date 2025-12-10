@@ -31,29 +31,29 @@ public final class BookUtils {
     }
 
 
-    public static List<Integer> extractSortedCounts(Map<String, Integer> merged) {
-        if (merged == null) {
+    public static List<Integer> extractSortedCounts(Map<String, Integer> mergedDuplicateBookMap) {
+        if (Objects.isNull(mergedDuplicateBookMap)) {
             throw new InvalidBookException("Merged books map must not be null");
         }
 
-        return merged.values().stream()
-                .filter(qty -> qty != null && qty > 0)
+        return mergedDuplicateBookMap.values().stream()
+                .filter(quantity -> Objects.nonNull(quantity) && quantity > 0)
                 .sorted(Comparator.reverseOrder())
                 .toList();
     }
 
 
-    public static void validateBasket(List<Book> items) {
-        if (CollectionUtils.isEmpty(items)) {
+    public static void validateBasket(List<Book> bookList) {
+        if (CollectionUtils.isEmpty(bookList)) {
             throw new InvalidBookException("Basket must not be null or empty");
         }
 
         boolean containsPositiveQuantity = false;
 
-        for (Book item : items) {
-            validateBook(item);
+        for (Book book : bookList) {
+            validateBook(book);
 
-            if (item.getQuantity() > 0) {
+            if (book.getQuantity() > 0) {
                 containsPositiveQuantity = true;
             }
         }
