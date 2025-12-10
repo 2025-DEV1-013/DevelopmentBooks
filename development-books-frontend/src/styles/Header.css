@@ -1,0 +1,29 @@
+.header-bar {
+    background: rgb(225, 246, 244) !important;
+    color: #0a3d62 !important;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  }
+  
+  .header-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding: 5px 5px;
+    min-height: 50px !important;
+  }
+    
+  .header-title {
+    font-weight: 600 !important;
+    font-size: 1.6rem !important;
+    color: #2923d9 !important;
+  }
+  
+  @media (max-width: 600px) {
+    .header-logo {
+      width: 60px;
+    }
+    .header-title {
+      font-size: 1.1rem !important;
+    }
+  }
+  
