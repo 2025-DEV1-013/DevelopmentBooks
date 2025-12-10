@@ -1,12 +1,27 @@
 import "../styles/BasketSummary.css";
 
+import { List, ListItem, ListItemText, Typography } from "@mui/material";
+
 export default function BasketSummary({ basket }) {
   const entries = Object.entries(basket);
 
   if (entries.length === 0) {
-    return <p>No books selected.</p>;
+    return <Typography>No books selected.</Typography>;
   }
 
-  // More functionality will be added in later TDD commits
-  return <div></div>;
+  return (
+    <List className="basket-list">
+      {entries.map(([title, quantity]) => (
+        <ListItem key={title}>
+          <ListItemText
+            primary={
+              <Typography className="basket-item-text">
+                <b>{title}</b> — Quantity: {quantity}
+              </Typography>
+            }
+          />
+        </ListItem>
+      ))}
+    </List>
+  );
 }
