@@ -1,0 +1,41 @@
+.book-card {
+  width: 240px;         /* fixed width */
+  height: 480px;        /* fixed height */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+/* Image area - fixed height and auto crop */
+.book-card-img {
+  height: 220px;
+  width: 100%;
+  object-fit: cover;      /* ensures image is not stretched */
+  border-bottom: 1px solid #eee;
+}
+
+.book-qty {
+  font-size: 1.8rem;
+  font-weight: bold !important;
+  min-width: 32px;
+  text-align: center;
+}
+
+
+.btn-minus {
+  background-color: #e53935 !important;
+}
+
+.btn-minus:hover {
+  background-color: #b71c1c !important;
+}
+
+.btn-plus {
+  background-color: #43a047 !important;
+}
+
+.btn-plus:hover {
+  background-color: #1b5e20 !important;
+}
