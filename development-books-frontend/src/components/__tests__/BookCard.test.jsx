@@ -28,4 +28,30 @@ describe("BookCard Component - single test", () => {
     expect(img).toBeInTheDocument();
     expect(img).toHaveAttribute("src", "clean-code.jpg");
   });
+
+it("calls increment handler when + button is clicked", () => {
+  const book = {
+    title: "Clean Code",
+    author: "Robert C. Martin",
+    price: 50,
+    imageUrl: "clean-code.jpg"
+  };
+
+  const increment = vi.fn();
+
+  render(
+    <BookCard
+      book={book}
+      quantity={0}
+      increment={increment}
+      decrement={() => {}}
+    />
+  );
+
+  const plusBtn = screen.getByText("+");
+  plusBtn.click();
+
+  expect(increment).toHaveBeenCalledWith("Clean Code");
+});
+
 });
