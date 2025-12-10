@@ -28,7 +28,7 @@ Develop a application to **calculate the best price** of any conceivable shoppin
 - **Backend** : Java & Springboot
 - **Frontend**: ReactJS
 
-# Functional case
+# Requirement Criteria
 
 If the shopping basket contains the below books.
 
@@ -44,3 +44,138 @@ We can avail the discounts for above shopping basket containing 8 books by group
 - (4 * 50 EUR) - 20% [first book, second book, third book, fifth book]
 
 = (160 EUR + 160 EUR) => **320 EUR**
+
+# Tools & Tech Stack
+### Backend – Tools & Libraries
+
+- **Language:** Java 21
+- **Framework:** Spring Boot 4.x (Spring MVC)
+- **Build Tool:** Maven
+- **Mapping:** MapStruct
+- **Validation & Exceptions:** Spring Validation, custom exception handlers
+- **API Documentation:** springdoc-openapi (Swagger UI)
+- **Code Coverage:** JaCoCo
+- **Testing:** JUnit 5, Mockito, Spring WebMVC Test (`@WebMvcTest`)
+
+### Frontend – Tools & Libraries
+
+- **Language:** JavaScript / JSX
+- **Framework:** React 18
+- **Bundler / Dev Server:** Vite
+- **UI Library:** Material UI (MUI)
+- **Routing:** React Router
+- **Testing:** Vitest + React Testing Library + Jest-DOM
+- **Styling:** CSS modules / scoped CSS under `src/styles`
+
+# Prerequisites
+
+Install the following on your machine:
+
+- Java 21+
+
+- Maven 3.9+
+
+- Node.js 18+ and npm 9+
+
+- Git (optional, for version control)
+
+
+## BackEnd Project Setup
+
+The initial setup includes:
+
+- **Spring Boot 4.0.0** project structure
+- **Java 21** compatibility
+
+## Running the Application
+
+First clone the git repository or download the source code form this link :
+```bash
+https://github.com/2025-DEV1-013/DevelopmentBooks.git
+```
+To run the application locally:
+### Backend
+```bash
+cd book-discount-price-backend
+mvn spring-boot:run            # run app
+mvn clean package              # build jar
+```
+Verify:
+
+http://localhost:8081/api/books/getbooks
+
+http://localhost:8081/api/books/price/calculate (POST with JSON)
+
+### Frontend
+
+```bash
+cd development-books-frontend
+npm install                    # install deps
+npm run dev                    # start Vite dev server (URL : http://localhost:5173)
+
+```
+
+# Build & Run Tests 
+
+To Execute Test locally:
+### Backend
+```bash
+cd book-discount-price-backend
+mvn clean test                 # run tests + Jacoco
+```
+This will:
+
+Compile the project
+
+Run all JUnit tests
+
+Generate JaCoCo code coverage report at:
+```bash
+book-discount-price-backend/target/site/jacoco/index.html
+```
+### Frontend
+
+```bash
+cd development-books-frontend
+npm test                       # run unit tests (Vitest)
+npm run test:ui                # web-based dashboard (URL : http://localhost:51204/__vitest__)
+```
+The frontend coverage html report will be at:
+```bash
+development-books-frontend/coverage/index.html
+```
+Open coverage/index.html in your browser.
+
+# Swagger & OpenAPI Usage
+
+Backend uses Swagger/OpenAPI 3.0 for API documentation.
+
+### swagger.yaml defines:
+
+/api/books → Fetch all development books
+
+/api/books/price → Calculate discounted price
+
+Models:
+
+- Book
+
+- BookResponse
+
+- BookBasketRequest
+
+- BookPriceResponse
+
+### Tools used:
+
+swagger.yaml (located in src/main/resources)
+
+openapi-generator-maven-plugin
+→ Automatically generates API models (DTOs) from YAML
+
+springdoc-openapi-starter
+→ Auto-generates live Swagger UI at runtime
+
+The backend exposes interactive Swagger UI using springdoc-openapi.
+
+Once the backend is running:  http://localhost:8090/swagger-ui/index.html
